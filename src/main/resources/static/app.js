@@ -32,19 +32,17 @@ var app = (function () {
         console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
+        console.log(stompClient);
         
-        //subscribe to /topic/TOPICXX when connections succeed
+        //subscribe to /topic/newpoint when connections succeed
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/newpoint', function (eventBody) {
-                alert(eventBody);
-                var body=JSON.parse(eventBody.body);
-                console.log(body);
+                var point=JSON.parse(eventBody.body);              
+                addPointToCanvas(point);
             });
         });
-
     };
-    
     
 
     return {
