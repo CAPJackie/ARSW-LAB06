@@ -45,13 +45,21 @@ var app = (function () {
         });
     };
     
-
+    var eventHandler = function(evt) {
+        let coordinates = getMousePosition(evt);
+        app.publishPoint(coordinates.x, coordinates.y);
+    };
+    
     return {
 
         init: function () {
             var can = document.getElementById("canvas");
             
-            //websocket connection
+            if (window.PointerEvent) {
+                can.addEventListener("pointerdown", eventHandler);
+            } else {
+                can.addEventListener("mousedown", eventHandler);
+            }
             
         },
 
