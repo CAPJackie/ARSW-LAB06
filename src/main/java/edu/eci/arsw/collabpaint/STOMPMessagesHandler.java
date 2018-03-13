@@ -16,11 +16,19 @@ public class STOMPMessagesHandler {
 	@Autowired
 	SimpMessagingTemplate msgt;
         
-        ConcurrentHashMap<String, ArrayList<Point>> puntosPoligono = new ConcurrentHashMap();
+        ConcurrentHashMap<String, ArrayList<Point>> polygonPoints = new ConcurrentHashMap();
     
 	@MessageMapping("/newpoint.{numdibujo}")    
 	public void handlePointEvent(Point pt,@DestinationVariable String numdibujo) throws Exception {
-		System.out.println("Nuevo punto recibido en el servidor!:"+pt);
-		msgt.convertAndSend("/topic/newpoint"+numdibujo, pt);
+		//System.out.println("Nuevo punto recibido en el servidor!:"+pt);
+		if(polygonPoints.keySet().contains(numdibujo)){
+                    polygonPoints.get(numdibujo).add(pt);
+                }
+                else{
+                    ArrayList<Point>                                                                      puntos = new ArrayList();
+                    puntos.add(pt);
+                    polygonPoints.put(numdibujo, puntos);
+                }
+                msgt.convertAndSend("/topic/newpoint"+numdibujo, pt);
 	}
 }
