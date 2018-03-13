@@ -71,6 +71,7 @@ var app = (function () {
             console.log(JSON.stringify(pt));
             //publicar el evento
             stompClient.send("/topic/newpoint." + topic, {}, JSON.stringify(pt)); 
+            stompClient.send("/app/newpoint." + topic, {}, JSON.stringify(pt)); 
 
             
         },
