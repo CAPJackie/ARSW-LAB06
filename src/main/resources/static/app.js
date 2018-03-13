@@ -17,6 +17,18 @@ var app = (function () {
         ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
         ctx.stroke();
     };
+	
+	var addPolygonToCanvas = function (points) {
+        var ctx = canvas.getContext('2d');
+		ctx.fillStyle = '#f00';
+		ctx.beginPath();
+		ctx.moveTo(0, 0);
+		for(point in points){
+			ctx.lineTo(point.x, point.y);
+		}
+		ctx.closePath();
+		ctx.fill();
+    };
     
     
     var getMousePosition = function (evt) {
@@ -38,9 +50,13 @@ var app = (function () {
         //subscribe to /topic/newpoint when connections succeed
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/newpoint.' + topic, function (eventBody) {
+            /*stompClient.subscribe('/topic/newpoint.' + topic, function (eventBody) {
                 var point=JSON.parse(eventBody.body);              
                 addPointToCanvas(point);
+            });*/
+			stompClient.subscribe('/topic/newpolygon.' + topic, function (eventBody) {
+                var points=JSON.parse(eventBody.body);              
+                addPolygonToCanvas(points);
             });
         });
     };
