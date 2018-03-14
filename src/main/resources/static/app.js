@@ -9,25 +9,25 @@ var app = (function () {
     
     var stompClient = null;
     var topic;
+    var canvas;
 
     var addPointToCanvas = function (point) {
-        var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
         ctx.beginPath();
         ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
         ctx.stroke();
     };
 	
-	var addPolygonToCanvas = function (points) {
+    var addPolygonToCanvas = function (points) {
         var ctx = canvas.getContext('2d');
-		ctx.fillStyle = '#f00';
-		ctx.beginPath();
-		ctx.moveTo(0, 0);
-		for(point in points){
-			ctx.lineTo(point.x, point.y);
-		}
-		ctx.closePath();
-		ctx.fill();
+        ctx.beginPath();
+        for(let i=0; i < points.length - 1; i++){
+            ctx.moveTo(points[i].x, points[i].y);
+            ctx.lineTo(points[i+1].x, points[i+1].y);
+        }
+        ctx.moveTo(points[points.length-1].x,points[points.length-1].y);
+        ctx.lineTo(points[0].x, points[0].y);
+        ctx.stroke();
     };
     
     
@@ -50,11 +50,11 @@ var app = (function () {
         //subscribe to /topic/newpoint when connections succeed
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            /*stompClient.subscribe('/topic/newpoint.' + topic, function (eventBody) {
+            stompClient.subscribe('/topic/newpoint.' + topic, function (eventBody) {
                 var point=JSON.parse(eventBody.body);              
                 addPointToCanvas(point);
-            });*/
-			stompClient.subscribe('/topic/newpolygon.' + topic, function (eventBody) {
+            });
+            stompClient.subscribe('/topic/newpolygon.' + topic, function (eventBody) {
                 var points=JSON.parse(eventBody.body);              
                 addPolygonToCanvas(points);
             });
@@ -69,12 +69,12 @@ var app = (function () {
     return {
 
         init: function () {
-            var can = document.getElementById("canvas");
+            canvas = document.getElementById("canvas");
             
             if (window.PointerEvent) {
-                can.addEventListener("pointerdown", eventHandler);
+                canvas.addEventListener("pointerdown", eventHandler);
             } else {
-                can.addEventListener("mousedown", eventHandler);
+                canvas.addEventListener("mousedown", eventHandler);
             }
             
         },
@@ -82,7 +82,7 @@ var app = (function () {
         publishPoint: function(px,py){          
             var pt=new Point(px,py);
             console.info("publishing point at "+pt);
-            addPointToCanvas(pt);
+            //addPointToCanvas(pt);
 
             console.log(JSON.stringify(pt));
             //publicar el evento

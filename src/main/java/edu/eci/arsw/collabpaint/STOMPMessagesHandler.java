@@ -20,16 +20,19 @@ public class STOMPMessagesHandler {
     
 	@MessageMapping("/newpoint.{numdibujo}")    
 	public void handlePointEvent(Point pt,@DestinationVariable String numdibujo) throws Exception {
-		//System.out.println("Nuevo punto recibido en el servidor!:"+pt);
+		System.out.println("Nuevo punto recibido en el servidor!:"+pt);
 		if(polygonPoints.containsKey(numdibujo)){
                     polygonPoints.get(numdibujo).add(pt);
-                    if(polygonPoints.get(numdibujo).size() > 3)msgt.convertAndSend("/topic/newpolygon."+numdibujo, polygonPoints.get(numdibujo));
+                    if(polygonPoints.get(numdibujo).size() > 3){
+                        msgt.convertAndSend("/topic/newpolygon."+numdibujo, polygonPoints.get(numdibujo));
+                        polygonPoints.clear();
+                    }
                 }
                 else{
                     ArrayList<Point> puntos = new ArrayList();
                     puntos.add(pt);
                     polygonPoints.put(numdibujo, puntos);
                 }
-                msgt.convertAndSend("/topic/newpoint."+numdibujo, pt);
+                //msgt.convertAndSend("/topic/newpoint."+numdibujo, pt);
 	}
 }
