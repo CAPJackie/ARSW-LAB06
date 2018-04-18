@@ -63,7 +63,9 @@ var app = (function () {
     
     var eventHandler = function(evt) {
         let coordinates = getMousePosition(evt);
-        stompClient.send("/app/newpoint." + topic, {}, JSON.stringify(new Point(coordinates.x, coordinates.y))); 
+        var point = new Point(coordinates.x, coordinates.y);
+        stompClient.send("/topic/newpoint." + topic, {}, JSON.stringify(point)); 
+        stompClient.send("/app/newpoint." + topic, {}, JSON.stringify(point)); 
     };
     
     return {
