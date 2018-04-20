@@ -33,16 +33,16 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 @EnableWebSocketMessageBroker
 public class CollabPaintWebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
-    @Value("${server.port}")
+    @Value("${local.server.port}")
     private int port;
     
-    @Value("${server.host}")
+    @Value("${local.server.host}")
     private String host;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         //System.out.println(userBucketPath);
-        config.enableStompBrokerRelay("/topic").setRelayHost("127.0.0.1").setRelayPort(8080);
+        config.enableStompBrokerRelay("/topic").setRelayHost(host).setRelayPort(port);
         config.setApplicationDestinationPrefixes("/app");
     }
 
