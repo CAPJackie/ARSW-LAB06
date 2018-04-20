@@ -38,8 +38,8 @@ public class CollabPaintWebSocketConfig extends AbstractWebSocketMessageBrokerCo
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        System.out.println(userBucketPath);
-        config.enableStompBrokerRelay("/topic").setRelayHost("127.0.0.1").setRelayPort(61613);
+        //System.out.println(userBucketPath);
+        config.enableStompBrokerRelay("/topic").setRelayHost(userBucketPath).setRelayPort(61613);
         config.setApplicationDestinationPrefixes("/app");
     }
 
