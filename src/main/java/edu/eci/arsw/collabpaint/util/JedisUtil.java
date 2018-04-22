@@ -15,11 +15,9 @@ import java.util.ResourceBundle;
  */
 public class JedisUtil {
     private  static JedisPool pool;
-    
-    private static ResourceBundle bundle;
 
     static {
-        bundle = ResourceBundle.getBundle("jedis");
+        ResourceBundle bundle = ResourceBundle.getBundle("jedis");
         
 
         JedisPoolConfig config = new JedisPoolConfig();
@@ -37,7 +35,6 @@ public class JedisUtil {
     }
 
     public static JedisPool getPool(){
-        System.out.println(bundle.getString("redis.ip"));
         return pool;
     }
     public static void closePool(){
