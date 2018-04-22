@@ -37,7 +37,7 @@ public class JedisUtil {
     }
 
     public static JedisPool getPool(){
-        System.out.println(bundle);
+        System.out.println(bundle.getString("redis.ip"));
         return pool;
     }
     public static void closePool(){
