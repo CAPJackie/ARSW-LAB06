@@ -11,6 +11,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Transaction;
 
 @Controller
@@ -24,16 +25,16 @@ public class STOMPMessagesHandler {
     @MessageMapping("/newpoint.{numdibujo}")
     public void handlePointEvent(Point pt, @DestinationVariable String numdibujo) throws Exception {
         
-        Jedis jedis = JedisUtil.getPool().getResource();
+        JedisPool jedis = JedisUtil.getPool();
         
-        jedis.watch("X","Y");
+        /*jedis.watch("X","Y");
         jedis.rpush("X", String.valueOf(pt.getX()));
         jedis.rpush("Y", String.valueOf(pt.getY()));
         Transaction tx = jedis.multi();
         
         List<Object> res=tx.exec();
         
-        System.out.println("TAMANO: "+res.size());
+        System.out.println("TAMANO: "+res.size());*/
 
 
         System.out.println("Nuevo punto recibido en el servidor!:" + pt);

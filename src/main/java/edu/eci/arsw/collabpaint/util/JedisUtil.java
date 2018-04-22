@@ -15,11 +15,12 @@ import java.util.ResourceBundle;
  */
 public class JedisUtil {
     private  static JedisPool pool;
+    
+    private static ResourceBundle bundle;
 
     static {
-        ResourceBundle bundle = ResourceBundle.getBundle("jedis");
+        bundle = ResourceBundle.getBundle("jedis");
         
-        System.out.println(bundle);
 
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(Integer.valueOf(bundle
@@ -36,6 +37,7 @@ public class JedisUtil {
     }
 
     public static JedisPool getPool(){
+        System.out.println(bundle);
         return pool;
     }
     public static void closePool(){
