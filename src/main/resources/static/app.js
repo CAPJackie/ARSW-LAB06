@@ -48,17 +48,24 @@ var app = (function () {
         console.log(stompClient);
         
         //subscribe to /topic/newpoint when connections succeed
-        stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/newpoint.' + topic, function (eventBody) {
-                var point=JSON.parse(eventBody.body);              
-                addPointToCanvas(point);
-            });
-            stompClient.subscribe('/topic/newpolygon.' + topic, function (eventBody) {
-                var points=JSON.parse(eventBody.body);              
-                addPolygonToCanvas(points);
-            });
-        });
+        stompClient.connect("yqbofqdf", "6CMzc5eiNjOdlv9cP9HpqFmHLK3KxUNS",
+            
+            function (frame) {
+				console.log('Connected: ' + frame);
+				stompClient.subscribe('/topic/newpoint.' + topic, function (eventBody) {
+					var point=JSON.parse(eventBody.body);              
+					addPointToCanvas(point);
+				});
+				stompClient.subscribe('/topic/newpolygon.' + topic, function (eventBody) {
+					var points=JSON.parse(eventBody.body);              
+					addPolygonToCanvas(points);
+				});
+			}
+			,
+			function(error){
+				console.info("error"+error);
+			}
+			, "yqbofqdf");
     };
     
     var eventHandler = function(evt) {

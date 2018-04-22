@@ -35,14 +35,19 @@ public class CollabPaintWebSocketConfig extends AbstractWebSocketMessageBrokerCo
 
     @Value("${local.server.port}")
     private int port;
-    
+
     @Value("${local.server.host}")
     private String host;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        //System.out.println(userBucketPath);
-        config.enableStompBrokerRelay("/topic").setRelayHost(host).setRelayPort(port);
+        config.enableStompBrokerRelay("/topic").setRelayHost(host).setRelayPort(port).
+                setClientLogin("yqbofqdf").
+                setClientPasscode("6CMzc5eiNjOdlv9cP9HpqFmHLK3KxUNS").
+                setSystemLogin("yqbofqdf").
+                setSystemPasscode("6CMzc5eiNjOdlv9cP9HpqFmHLK3KxUNS").
+                setVirtualHost("yqbofqdf");
+
         config.setApplicationDestinationPrefixes("/app");
     }
 
