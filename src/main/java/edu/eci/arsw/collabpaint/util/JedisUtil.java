@@ -18,6 +18,8 @@ public class JedisUtil {
 
     static {
         ResourceBundle bundle = ResourceBundle.getBundle("jedis");
+        
+        System.out.println(bundle);
 
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(Integer.valueOf(bundle
