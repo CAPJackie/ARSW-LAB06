@@ -28,10 +28,10 @@ public class STOMPMessagesHandler {
             jedis.getClient().setTimeoutInfinite();  
             
             jedis.watch("X", "Y");
+            Transaction tx = jedis.multi();
             jedis.rpush("X", String.valueOf(pt.getX()));
             jedis.rpush("Y", String.valueOf(pt.getY()));
-            Transaction tx = jedis.multi();
-
+            
             List<Object> res = tx.exec();
             
             System.out.println("TAMANO: " + res.size()); 
