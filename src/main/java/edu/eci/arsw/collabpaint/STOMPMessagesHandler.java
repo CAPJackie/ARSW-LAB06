@@ -30,7 +30,7 @@ public class STOMPMessagesHandler {
             
             
             Transaction tx = jedis.multi();
-            jedis.watch("X", "Y");
+            tx.watch("X", "Y");
             List<Object> res = tx.exec();
             
             jedis.rpush("X", String.valueOf(pt.getX()));
