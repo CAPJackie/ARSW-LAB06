@@ -28,11 +28,14 @@ public class STOMPMessagesHandler {
             jedis.getClient().setTimeoutInfinite();  
             
             jedis.watch("X", "Y");
+            
             Transaction tx = jedis.multi();
+            List<Object> res = tx.exec();
+            
             jedis.rpush("X", String.valueOf(pt.getX()));
             jedis.rpush("Y", String.valueOf(pt.getY()));
             
-            List<Object> res = tx.exec();
+            
             
             System.out.println("TAMANO: " + res.size()); 
             System.out.println("Nuevo punto recibido en el servidor!:" + pt);
