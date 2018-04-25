@@ -27,9 +27,10 @@ public class STOMPMessagesHandler {
             Jedis jedis = JedisUtil.getPool().getResource();
             jedis.getClient().setTimeoutInfinite();  
             
-            jedis.watch("X", "Y");
+            
             
             Transaction tx = jedis.multi();
+            jedis.watch("X", "Y");
             List<Object> res = tx.exec();
             
             jedis.rpush("X", String.valueOf(pt.getX()));
