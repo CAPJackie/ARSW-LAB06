@@ -25,6 +25,8 @@ public class STOMPMessagesHandler {
     @MessageMapping("/newpoint.{numdibujo}")
     public void handlePointEvent(Point pt, @DestinationVariable String numdibujo) throws Exception {
             Jedis jedis = JedisUtil.getPool().getResource();
+            jedis.getClient().setTimeoutInfinite();  
+            
             jedis.watch("X", "Y");
             jedis.rpush("X", String.valueOf(pt.getX()));
             jedis.rpush("Y", String.valueOf(pt.getY()));
