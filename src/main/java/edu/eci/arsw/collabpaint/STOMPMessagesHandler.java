@@ -31,10 +31,11 @@ public class STOMPMessagesHandler {
             
             Transaction tx = jedis.multi();
             tx.watch("X", "Y");
+            tx.rpush("X", String.valueOf(pt.getX()));
+            tx.rpush("Y", String.valueOf(pt.getY()));
             List<Object> res = tx.exec();
             
-            jedis.rpush("X", String.valueOf(pt.getX()));
-            jedis.rpush("Y", String.valueOf(pt.getY()));
+            
             
             
             
