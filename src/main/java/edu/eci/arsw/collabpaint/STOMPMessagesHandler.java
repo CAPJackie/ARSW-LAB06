@@ -40,7 +40,7 @@ public class STOMPMessagesHandler {
         System.out.println("Nuevo punto recibido en el servidor!:" + pt);
 
         String luaScript = "local xVal,yVal; \n"
-                + "if (redis.call('LLEN','X')==4) then \n"
+                + "if (redis.call('LLEN','X')>=4) then \n"
                 + "	xVal=redis.call('LRANGE','X',0,-1);\n"
                 + "	yVal=redis.call('LRANGE','Y',0,-1);\n"
                 + "	redis.call('DEL','X');\n"
