@@ -4,6 +4,7 @@ import edu.eci.arsw.collabpaint.model.Point;
 import edu.eci.arsw.collabpaint.util.JedisUtil;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -30,7 +31,6 @@ public class STOMPMessagesHandler {
             
             jedis.watch("X", "Y");
             Transaction tx = jedis.multi();
-            tx.set("X", "Y");
             tx.rpush("X", String.valueOf(pt.getX()));
             tx.rpush("Y", String.valueOf(pt.getY()));
             List<Object> res = tx.exec();
@@ -38,11 +38,11 @@ public class STOMPMessagesHandler {
             
             
             
+            Set<String> smembers = jedis.smembers("Y");
             
+            smembers.forEach(System.out::println);
             
-            
-            
-            System.out.println("TAMANO: " + jedis.get("Y"));
+            System.out.println("TAMANO: " + jedis.smembers("Y"));
             
             System.out.println("Nuevo punto recibido en el servidor!:" + pt);
             
