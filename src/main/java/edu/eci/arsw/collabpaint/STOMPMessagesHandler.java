@@ -35,7 +35,7 @@ public class STOMPMessagesHandler {
         tx.rpush("Y", String.valueOf(pt.getY()));
         List<Object> res = tx.exec();
 
-        System.out.println(jedis.lrange("Y", 0, -1));
+        //System.out.println(jedis.lrange("Y", 0, -1));
 
         System.out.println("Nuevo punto recibido en el servidor!:" + pt);
 
@@ -50,9 +50,10 @@ public class STOMPMessagesHandler {
                 + "	return {};\n"
                 + "end";
 
-        Response<Object> luares = tx.eval(luaScript.getBytes(), 0, "0".getBytes());
+        Transaction t = jedis.multi();
+        Response<Object> luares = t.eval(luaScript.getBytes(), 0, "0".getBytes());
 
-        List<Object> resp = tx.exec();
+        List<Object> resp = t.exec();
 
         if (((ArrayList) luares.get()).size() == 2) {
             System.out.println(new String((byte[]) ((ArrayList) (((ArrayList) luares.get()).get(0))).get(0)));
