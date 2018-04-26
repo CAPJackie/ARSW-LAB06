@@ -42,7 +42,8 @@ public class STOMPMessagesHandler {
             
             
             
-            System.out.println("TAMANO: " + jedis.get("X")); 
+            System.out.println("TAMANO: " + jedis.get("Y"));
+            
             System.out.println("Nuevo punto recibido en el servidor!:" + pt);
             
             jedis.close();
