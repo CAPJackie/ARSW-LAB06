@@ -33,7 +33,6 @@ public class STOMPMessagesHandler {
         Transaction tx = jedis.multi();
         tx.rpush("X", String.valueOf(pt.getX()));
         tx.rpush("Y", String.valueOf(pt.getY()));
-        List<Object> res = tx.exec();
 
         //System.out.println(jedis.lrange("Y", 0, -1));
 
