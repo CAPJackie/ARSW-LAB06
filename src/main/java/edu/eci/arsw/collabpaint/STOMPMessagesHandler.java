@@ -42,7 +42,7 @@ public class STOMPMessagesHandler {
             
             //smembers.forEach(System.out::println);
             
-            System.out.println("TAMANO: " + jedis.smembers("Y"));
+            //System.out.println("TAMANO: " + jedis.smembers("Y"));
             
             System.out.println("Nuevo punto recibido en el servidor!:" + pt);
             
