@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -23,6 +24,8 @@ public class STOMPMessagesHandler {
     SimpMessagingTemplate msgt;
 
     ConcurrentHashMap<String, ArrayList<Point>> polygonPoints = new ConcurrentHashMap();
+    
+    private CopyOnWriteArrayList<Point> polygon = new CopyOnWriteArrayList<>();
 
     @MessageMapping("/newpoint.{numdibujo}")
     public void handlePointEvent(Point pt, @DestinationVariable String numdibujo) throws Exception {
@@ -30,13 +33,10 @@ public class STOMPMessagesHandler {
         jedis.getClient().setTimeoutInfinite();
 
         jedis.watch("X", "Y");
-        
+
         Transaction tx = jedis.multi();
         tx.rpush("X", String.valueOf(pt.getX()));
         tx.rpush("Y", String.valueOf(pt.getY()));
-
-        
-        
 
         System.out.println("Nuevo punto recibido en el servidor!:" + pt);
 
@@ -53,34 +53,18 @@ public class STOMPMessagesHandler {
 
         Response<Object> luares = tx.eval(luaScript.getBytes(), 0, "0".getBytes());
 
-        List<List> resp = (ArrayList) tx.exec();
-        
-        
-        if(resp.size() == 2){
-            System.out.println("POLIGONO");
-            ArrayList<Point> respuesta = new ArrayList();
-            for(int i= 0; i<4; i++){
-                System.out.println((int)resp.get(0).get(i)+","+(int)resp.get(1).get(i));
-                respuesta.add(new Point((int)resp.get(0).get(i),(int) resp.get(1).get(i)));
-            }
-            msgt.convertAndSend("/topic/newpolygon." + numdibujo, respuesta);
+        List<Object> resp = tx.exec();
+
+        if (resp.size() == 2) {
+            ArrayList<Object> coordX = (ArrayList) (((ArrayList) luares.get()).get(0));
+            ArrayList<Object> coordY = (ArrayList) (((ArrayList) luares.get()).get(1));
+            for (int i = 0; i < 4; i++) {
+                Point pol = new Point(Integer.parseInt(new String((byte[]) coordX.get(i))), Integer.parseInt(new String((byte[]) coordY.get(i))));
+                polygon.add(pol);
+            }          
+            msgt.convertAndSend("/topic/newpolygon." + numdibujo, polygon);
+            polygon.clear();
         }
-
-        /*if (((ArrayList) luares.get()).size() == 2) {
-            System.out.println(new String((byte[]) ((ArrayList) (((ArrayList) luares.get()).get(0))).get(0)));
-        }*/
         jedis.close();
-
-        /*if (polygonPoints.containsKey(numdibujo)) {
-            polygonPoints.get(numdibujo).add(pt);
-            if (polygonPoints.get(numdibujo).size() > 3) {
-                msgt.convertAndSend("/topic/newpolygon." + numdibujo, polygonPoints.get(numdibujo));
-                polygonPoints.clear();
-            }
-        } else {
-            ArrayList<Point> puntos = new ArrayList();
-            puntos.add(pt);
-            polygonPoints.put(numdibujo, puntos);
-        }*/
     }
 }
