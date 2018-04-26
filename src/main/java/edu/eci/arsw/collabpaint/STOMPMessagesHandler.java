@@ -34,14 +34,15 @@ public class STOMPMessagesHandler {
         tx.rpush("X", String.valueOf(pt.getX()));
         tx.rpush("Y", String.valueOf(pt.getY()));
 
+        
         //System.out.println(jedis.lrange("Y", 0, -1));
 
         System.out.println("Nuevo punto recibido en el servidor!:" + pt);
 
         String luaScript = "local xVal,yVal; \n"
                 + "if (redis.call('LLEN','X')>=4) then \n"
-                + "	xVal=redis.call('LRANGE','X',0,-1);\n"
-                + "	yVal=redis.call('LRANGE','Y',0,-1);\n"
+                + "	xVal=redis.call('LRANGE',KEYS[1],0,-1) 1 X;\n"
+                + "	yVal=redis.call('LRANGE',KEYS[1],0,-1) 1 Y;\n"
                 + "	redis.call('DEL','X');\n"
                 + "	redis.call('DEL','Y');\n"
                 + "	return {xVal,yVal};\n"
