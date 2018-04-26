@@ -10,11 +10,13 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Juan David
  */
+@Service
 public class InMemoryPersistenceService implements PersistenceHandlerService{
 
     @Autowired

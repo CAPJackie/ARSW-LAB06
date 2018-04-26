@@ -21,7 +21,7 @@ import redis.clients.jedis.Transaction;
  *
  * @author Juan David
  */
-@Service
+//@Service
 public class REDISPersistenceService implements PersistenceHandlerService{
 
     @Autowired
