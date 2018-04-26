@@ -36,8 +36,8 @@ public class STOMPMessagesHandler {
             List<Object> res = tx.exec();
 
             
-            jedis.lrange("Y", 0, -1);
-            System.out.println(jedis.llen("Y"));
+            System.out.println(jedis.lrange("Y", 0, -1));
+            //System.out.println(jedis.llen("Y"));
             
             //Set<String> smembers = jedis.smembers("Y");
             
