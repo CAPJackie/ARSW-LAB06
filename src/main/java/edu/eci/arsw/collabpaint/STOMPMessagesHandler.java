@@ -53,11 +53,20 @@ public class STOMPMessagesHandler {
 
         Response<Object> luares = tx.eval(luaScript.getBytes(), 0, "0".getBytes());
 
-        List<Object> resp = tx.exec();
-
-        if (((ArrayList) luares.get()).size() == 2) {
-            System.out.println(new String((byte[]) ((ArrayList) (((ArrayList) luares.get()).get(0))).get(0)));
+        List<List> resp = (ArrayList) tx.exec();
+        
+        
+        if(resp.size() == 2){
+            ArrayList<Point> respuesta = new ArrayList();
+            for(int i= 0; i<4; i++){
+                respuesta.add(new Point((int)resp.get(0).get(i),(int) resp.get(1).get(i)));
+            }
+            msgt.convertAndSend("/topic/newpolygon." + numdibujo, respuesta);
         }
+
+        /*if (((ArrayList) luares.get()).size() == 2) {
+            System.out.println(new String((byte[]) ((ArrayList) (((ArrayList) luares.get()).get(0))).get(0)));
+        }*/
         jedis.close();
 
         /*if (polygonPoints.containsKey(numdibujo)) {
