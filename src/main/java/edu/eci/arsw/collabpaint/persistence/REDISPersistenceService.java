@@ -51,7 +51,7 @@ public class REDISPersistenceService implements PersistenceHandlerService{
         tx.rpush("X", String.valueOf(pt.getX()));
         tx.rpush("Y", String.valueOf(pt.getY()));
 
-        System.out.println("Nuevo punto recibido en el servidor!:" + pt);
+        System.out.println("REDIS CONFIGURATION: Nuevo punto recibido en el servidor!:" + pt);
 
         Response<Object> luares = tx.eval(luaScript.getBytes(), 0, "0".getBytes());
 

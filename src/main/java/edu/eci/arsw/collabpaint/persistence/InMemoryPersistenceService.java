@@ -26,7 +26,7 @@ public class InMemoryPersistenceService implements PersistenceHandlerService{
     
     @Override
     public void handleRequest(Point pt, String numdibujo) {
-         System.out.println("Nuevo punto recibido en el servidor!:"+pt);
+         System.out.println("In Memory Configuration: Nuevo punto recibido en el servidor!:"+pt);
 		if(polygonPoints.containsKey(numdibujo)){
                     polygonPoints.get(numdibujo).add(pt);
                     if(polygonPoints.get(numdibujo).size() > 3){
