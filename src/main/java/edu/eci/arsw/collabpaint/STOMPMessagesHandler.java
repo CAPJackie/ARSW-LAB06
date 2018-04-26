@@ -55,11 +55,11 @@ public class STOMPMessagesHandler {
 
         List<Object> resp = tx.exec();
 
-        if (resp.size() == 2) {
-            ArrayList<Object> coordX = (ArrayList) (((ArrayList) luares.get()).get(0));
-            ArrayList<Object> coordY = (ArrayList) (((ArrayList) luares.get()).get(1));
+        if (((ArrayList) luares.get()).size() == 2) {
+            ArrayList<Object> xValues = (ArrayList) (((ArrayList) luares.get()).get(0));
+            ArrayList<Object> yValues = (ArrayList) (((ArrayList) luares.get()).get(1));
             for (int i = 0; i < 4; i++) {
-                Point pol = new Point(Integer.parseInt(new String((byte[]) coordX.get(i))), Integer.parseInt(new String((byte[]) coordY.get(i))));
+                Point pol = new Point(Integer.parseInt(new String((byte[]) xValues.get(i))), Integer.parseInt(new String((byte[]) yValues.get(i))));
                 polygon.add(pol);
             }          
             msgt.convertAndSend("/topic/newpolygon." + numdibujo, polygon);
