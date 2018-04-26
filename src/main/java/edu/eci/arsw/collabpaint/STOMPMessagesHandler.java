@@ -30,7 +30,7 @@ public class STOMPMessagesHandler {
             
             jedis.watch("X", "Y");
             Transaction tx = jedis.multi();
-            
+            tx.set("X", "Y");
             tx.rpush("X", String.valueOf(pt.getX()));
             tx.rpush("Y", String.valueOf(pt.getY()));
             List<Object> res = tx.exec();
@@ -39,7 +39,10 @@ public class STOMPMessagesHandler {
             
             
             
-            System.out.println("TAMANO: " + res.size()); 
+            
+            
+            
+            System.out.println("TAMANO: " + jedis.get("X")); 
             System.out.println("Nuevo punto recibido en el servidor!:" + pt);
             
             jedis.close();
