@@ -36,11 +36,11 @@ public class STOMPMessagesHandler {
             List<Object> res = tx.exec();
             
             
+            System.out.println(jedis.type("Y"));
             
+            //Set<String> smembers = jedis.smembers("Y");
             
-            Set<String> smembers = jedis.smembers("Y");
-            
-            smembers.forEach(System.out::println);
+            //smembers.forEach(System.out::println);
             
             System.out.println("TAMANO: " + jedis.smembers("Y"));
             
