@@ -57,8 +57,10 @@ public class STOMPMessagesHandler {
         
         
         if(resp.size() == 2){
+            System.out.println("POLIGONO");
             ArrayList<Point> respuesta = new ArrayList();
             for(int i= 0; i<4; i++){
+                System.out.println((int)resp.get(0).get(i)+","+(int)resp.get(1).get(i));
                 respuesta.add(new Point((int)resp.get(0).get(i),(int) resp.get(1).get(i)));
             }
             msgt.convertAndSend("/topic/newpolygon." + numdibujo, respuesta);
