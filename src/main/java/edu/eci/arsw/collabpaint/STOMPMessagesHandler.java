@@ -49,10 +49,9 @@ public class STOMPMessagesHandler {
                 + "	return {};\n"
                 + "end";
 
-        Transaction t = jedis.multi();
-        Response<Object> luares = t.eval(luaScript.getBytes(), 0, "0".getBytes());
+        Response<Object> luares = tx.eval(luaScript.getBytes(), 0, "0".getBytes());
 
-        List<Object> resp = t.exec();
+        List<Object> resp = tx.exec();
 
         if (((ArrayList) luares.get()).size() == 2) {
             System.out.println(new String((byte[]) ((ArrayList) (((ArrayList) luares.get()).get(0))).get(0)));
