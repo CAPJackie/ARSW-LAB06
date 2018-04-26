@@ -28,9 +28,6 @@ public class STOMPMessagesHandler {
     public void handlePointEvent(Point pt, @DestinationVariable String numdibujo) throws Exception {
         Jedis jedis = JedisUtil.getPool().getResource();
         jedis.getClient().setTimeoutInfinite();
-        
-        jedis.del("X");
-        jedis.del("Y");
 
         jedis.watch("X", "Y");
         
